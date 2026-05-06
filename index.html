@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Syn4D: A Multiview Synthetic 4D Dataset">
+  <meta name="keywords" content="Syn4D, 4D dataset, synthetic dataset, dynamic scene, 3D tracking, depth estimation, novel view synthesis, human pose estimation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Syn4D: A Multiview Synthetic 4D Dataset</title>
+
+
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./icons/syn4d_icon_crop.png">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+<!-- Begin new styles from demos page -->
+<style>
+    /* body {
+      padding: 2em;
+      font-family: sans-serif;
+    } */
+
+    iframe {
+      border-radius: 8px;
+      width: 48%;
+      height: 100%;
+      border: none;
+      box-shadow: 0 0 0px 0em rgba(0, 0, 0, 0.15);
+    }
+
+    /* @media (max-width: 768px) {
+      iframe {
+        width: 100%;
+        height: 80em;
+      }
+    } */
+
+    /* a,
+    a:link {
+      color: #777;
+    } */
+
+    /* Styles for the instruction icons and text */
+    .instructions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.2em;
+      text-align: center;
+      padding: 0.6em;
+    }
+
+    .instruction-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      font-size: 1.2em;
+    }
+
+    .instruction-item img {
+      width: 36px;
+      height: 36px;
+    }
+
+    .instructions_small {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1em;
+      text-align: center;
+      padding: 0.5em;
+    }
+
+    .instruction-item_small {
+      display: flex;
+      align-items: center;
+      gap: 0.3em;
+      font-size: 1.0em;
+    }
+
+    .instruction-item_small img {
+      width: 30px;
+      height: 30px;
+    }
+
+    /* === Professional Results Tables === */
+    .results-table-wrapper {
+      overflow-x: auto;
+      margin: 1.5em auto 0.5em auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+      background: #ffffff;
+      border: 1px solid #e8edf3;
+    }
+
+    .results-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-family: 'Google Sans', 'Noto Sans', sans-serif;
+      font-size: 0.92em;
+      color: #1f2937;
+    }
+
+    .results-table thead .group-header th {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b3a8a 50%, #5b4ba0 100%);
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      padding: 14px 14px;
+      text-align: center;
+      vertical-align: middle;
+      border: none;
+    }
+
+    .results-table thead .group-header th:first-child {
+      text-align: left;
+      padding-left: 22px;
+    }
+
+    .results-table thead .sub-header th {
+      background: #f0f4fa;
+      color: #334155;
+      font-weight: 600;
+      font-size: 0.90em;
+      padding: 9px 12px;
+      text-align: center;
+      border-top: 1px solid #dbe3ee;
+      border-bottom: 1px solid #dbe3ee;
+    }
+
+    .results-table thead .metric-header th {
+      background: #fafbfd;
+      color: #475569;
+      font-weight: 500;
+      font-size: 0.86em;
+      padding: 8px 12px;
+      text-align: center;
+      border-bottom: 2px solid #cfd8e3;
+      letter-spacing: 0.01em;
+    }
+
+    .results-table thead .metric-header th:first-child {
+      text-align: left;
+      padding-left: 22px;
+    }
+
+    .results-table tbody td {
+      padding: 13px 12px;
+      text-align: center;
+      border-bottom: 1px solid #eef2f6;
+      color: #1f2937;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .results-table tbody td.method-name {
+      text-align: left;
+      padding-left: 22px;
+      font-weight: 500;
+      color: #0f172a;
+    }
+
+    .results-table tbody td.section-divider {
+      border-top: 1.5px solid #cfd8e3;
+    }
+
+    .results-table tbody tr {
+      transition: background-color 0.18s ease;
+    }
+
+    .results-table tbody tr:hover td {
+      background: #f7faff;
+    }
+
+    .results-table tbody tr.ours td {
+      background: linear-gradient(90deg, rgba(91, 75, 160, 0.04) 0%, rgba(91, 75, 160, 0.07) 100%);
+    }
+
+    .results-table tbody tr.ours:hover td {
+      background: linear-gradient(90deg, rgba(91, 75, 160, 0.09) 0%, rgba(91, 75, 160, 0.14) 100%);
+    }
+
+    .results-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .best {
+      color: #b91c1c;
+      font-weight: 700;
+    }
+
+    .arrow-up::before { content: "\2191"; margin-left: 2px; opacity: 0.55; }
+    .arrow-down::before { content: "\2193"; margin-left: 2px; opacity: 0.55; }
+
+    .table-caption {
+      margin: 0.7em auto 2em auto;
+      font-size: 0.92em;
+      color: #475569;
+      text-align: center;
+      max-width: 90%;
+      line-height: 1.55;
+    }
+
+    .table-caption b {
+      color: #0f172a;
+    }
+
+    .table-title {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 1.05em;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 1.6em 0 0.2em 0;
+      text-align: left;
+      padding-left: 0.2em;
+      border-left: 4px solid #5b4ba0;
+      padding-left: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .results-table { font-size: 0.82em; }
+      .results-table thead .group-header th { padding: 11px 10px; }
+      .results-table tbody td { padding: 10px 8px; }
+    }
+
+  </style>
+  <!-- End new styles -->
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+            <img src="./icons/syn4d_icon_crop.png" alt="Syn4D Icon" style="width: 128px; vertical-align: middle;">
+          <h1 class="title is-1 publication-title">
+            Syn4D: A Multiview Synthetic 4D Dataset
+          </h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://jzr99.github.io">Zeren Jiang</a><sup>1,*</sup>,</span>
+            <span class="author-block">
+              <a href="https://nirvanalan.github.io/">Yushi Lan</a><sup>2,*</sup>,</span>
+            <span class="author-block">
+              <a href="#">Yihang Luo</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="#">Yufan Deng</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://zlai0.github.io/">Zihang Lai</a><sup>1</sup>,</span>
+            <br>
+            <span class="author-block">
+              <a href="https://edgarsucar.github.io/">Edgar Sucar</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://chrirupp.github.io/">Christian Rupprecht</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://eng.ox.ac.uk/people/iro-laina/">Iro Laina</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://dlarlus.github.io/">Diane Larlus</a><sup>3</sup>,</span>
+            <br>
+            <span class="author-block">
+              <a href="https://chuanxiaz.com/">Chuanxia Zheng</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://www.robots.ox.ac.uk/~vedaldi/">Andrea Vedaldi</a><sup>1</sup></span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Visual Geometry Group, University of Oxford,</span>
+            <span class="author-block"><sup>2</sup>Nanyang Technological University,</span>
+            <span class="author-block"><sup>3</sup>Naver Labs Europe</span>
+          </div>
+          <div class="is-size-6 publication-authors" style="margin-top: 0.4em;">
+            <span class="author-block"><sup>*</sup>Equal contribution</span>
+          </div>
+
+          <!-- <div class="is-size-5 publication-authors">
+            <span class="author-block">ICCV 2025 <span style="color: red;">Highlight</span> </span>
+            </span>
+          </div> -->
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="https://huggingface.co/datasets/Syn4D/Syn4D_RGBD/tree/main"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data (without tracking annotations)</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data full-annotated (coming soon)</span>
+                </a>
+              </span>
+              <!-- <span class="link-block">
+                <a href="./resource/CVPR2024_MultiPly_Supp_Doc.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-archive"></i>
+                  </span>
+                  <span>SuppMat</span>
+                </a>
+              </span> -->
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/jzr99/Syn4D"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+               <!-- Dataset Link. -->
+              <!-- <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data (coming soon)</span>
+                  </a>
+              </span> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+        <img src="./resources/syn4d_teaser_v2.png"  class="center" style="width: 100%;"/>
+      <h2 class="subtitle has-text-centered" style="margin-top: 1em;">
+        <b>Syn4D</b> is a large-scale synthetic dataset designed for a set of 4D tasks, including camera pose estimation, depth estimation, dynamic 3D scene reconstruction, 2D/3D tracking, human pose estimation, and novel-view synthesis. <em>Left:</em> two shots with synchronized multi-camera frames. <em>Right:</em> unprojected depth maps, camera trajectories, geometry, and 3D tracking results for both shots.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Dense 3D reconstruction and tracking of dynamic scenes from monocular video remains an important open challenge in computer vision. Progress in this area has been constrained by the scarcity of high-quality datasets with dense, complete, and accurate geometric annotations. To address this limitation, we introduce <b>Syn4D</b>, a multiview synthetic dataset of dynamic scenes that includes ground-truth camera motion, depth maps, dense tracking, and parametric human pose annotations. A key feature of Syn4D is the ability to unproject <em>any</em> pixel into 3D to <em>any</em> time and to <em>any</em> camera. We conduct extensive evaluations across multiple downstream tasks to demonstrate the utility and effectiveness of the proposed dataset, including 4D scene reconstruction, 3D point tracking, geometry-aware camera retargeting, and human pose estimation. The experimental results highlight Syn4D's potential to facilitate research in dynamic scene understanding and spatiotemporal modeling.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/2lvTGYfAsZo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+
+<!-- <section class="section" id="method">
+  <div class="container is-max-desktop content">
+    <h2 class="title">Dataset</h2>
+    <img src="./resources/syn4d_overview.png"  height="250" class="center"/>
+    <p>
+        <b>Syn4D dataset overview.</b> Syn4D is a large-scale multiview synthetic 4D dataset built with photorealistic rendering of dynamic scenes that contain articulated humans interacting with diverse environments.
+        Each scene is captured by multiple synchronized cameras with known intrinsics and extrinsics, and is paired with dense ground-truth annotations: per-pixel depth, multi-view camera trajectories, dense long-range 3D point tracks, and parametric SMPL-X human pose and shape.
+        These annotations are spatially and temporally consistent across views, enabling any pixel to be unprojected into 3D at any frame and re-projected into any other camera.
+    </p>
+
+    <img src="./resources/syn4d_pipeline.png" style="height: 300px; display: block; margin: 0 auto;"/>
+    <p>
+        <b>Annotation pipeline.</b> We render dynamic scenes with a procedural multi-camera setup that jointly outputs RGB, depth, instance segmentation, optical flow, dense 3D tracks, and parametric human pose.
+        The unified pipeline ensures that visual and geometric annotations are tightly aligned, providing strong supervision for downstream 4D reconstruction, point tracking, novel view synthesis, and human pose estimation tasks.
+    </p>
+
+
+  </div>
+</section> -->
+
+<section class="section" id="result">
+  <div class="container is-max-desktop content">
+    <h2 class="title">Dataset Samples</h2>
+    <p>
+      Each scene in Syn4D is rendered with photorealistic quality from multiple synchronized cameras, capturing diverse dynamic environments and human-object interactions.
+    </p>
+    <section class="hero is-light is-small">
+      <div class="hero-body">
+        <div class="container">
+          <div id="results-carousel" class="carousel results-carousel" data-slides-to-show="1">
+            <div class="item">
+              <video poster="" autoplay controls muted loop style="width: 100%; height: auto;">
+                <source src="./syn4d_mp4/ds_1.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item">
+              <video poster="" autoplay controls muted loop style="width: 100%; height: auto;">
+                <source src="./syn4d_mp4/ds_2.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item">
+              <video poster="" autoplay controls muted loop style="width: 100%; height: auto;">
+                <source src="./syn4d_mp4/ds_3.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <h2 class="title" style="margin-top: 2em;">Data Annotation</h2>
+    <p>
+      Syn4D provides dense ground-truth annotations for every scene, including per-pixel depth, multi-view camera trajectories, dense long-range 3D point tracks, and parametric SMPL-X human pose and shape.
+    </p>
+    <section class="hero is-light is-small">
+      <div class="hero-body">
+        <div class="container">
+          <div id="annotation-carousel" class="carousel results-carousel" data-slides-to-show="1">
+            <div class="item">
+              <video poster="" autoplay controls muted loop style="width: 100%; height: auto;">
+                <source src="./syn4d_mp4/ds_1_anno.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item">
+              <video poster="" autoplay controls muted loop style="width: 100%; height: auto;">
+                <source src="./syn4d_mp4/ds_2_anno.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item">
+              <video poster="" autoplay controls muted loop style="width: 100%; height: auto;">
+                <source src="./syn4d_mp4/ds_3_anno.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <h2 class="title" style="margin-top: 2em;">Geometry-aware Novel View Synthesis</h2>
+    <p>
+      Trained with Syn4D, our geometry-aware multiview generator produces temporally consistent novel views with accurate geometry from a single source video.
+    </p>
+    <section class="hero is-light is-small">
+      <div class="hero-body">
+        <div class="container">
+          <div id="ganvs-carousel" class="carousel results-carousel" data-slides-to-show="1">
+            <div class="item">
+              <video poster="" autoplay controls muted loop style="width: 100%; height: auto;">
+                <source src="./syn4d_mp4/ga_nvs_1.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="item">
+              <video poster="" autoplay controls muted loop style="width: 100%; height: auto;">
+                <source src="./syn4d_mp4/ga_nvs_2.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+     <!-- <div class="columns is-centered is-gapless">
+      <div class="column">
+        <div class="content">
+          <h4 class="title">Hi4D Dataset</h4>
+          <video autoplay controls muted loop height="100%">
+            <source src="./resource/compare_1.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+
+      <div class="column">
+        <h4 class="title">MMM Dataset</h4>
+        <div class="columns is-centered">
+          <div class="column content">
+          <video autoplay controls muted loop height="100%">
+            <source src="./resource/compare_2.mp4"
+                    type="video/mp4">
+          </video>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <h4 class="title">In-the-wild Videos</h4>
+        <div class="columns is-centered">
+          <div class="column content">
+          <video autoplay controls muted loop height="100%">
+            <source src="./resource/compare_3.mp4"
+                    type="video/mp4">
+          </video>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- <h2 class="title">Result</h2>
+    <h3 class="title">Interactive 4D Visualization</h3>  -->
+    <!-- <div class="content"> -->
+        <!-- Instructions with icons -->
+    <!-- <div class="instructions_small" style="margin-top: -1em;">
+      <div class="instruction-item_small" style="display: flex; align-items: center;">
+        <img src="icons/left-click.png" alt="Left Click" style="margin-right: 0px;">
+        <span>Drag with <em>left</em> click to <strong>rotate</strong> view</span>
+      </div>
+  
+      <div class="instruction-item_small" style="display: flex; align-items: center; margin-top: 10px;">
+        <img src="icons/scroll-wheel.png" alt="Scroll Wheel" style="margin-right: -5px;">
+        <span>Scroll to <strong>zoom</strong> in/out</span>
+      </div>
+  
+      <div class="instruction-item_small" style="display: flex; align-items: center; margin-top: 10px;">
+        <img src="icons/right-click.png" alt="Right Click" style="margin-right: 0px;">
+        <span>Drag with <em>right</em> click to <strong>move</strong> view</span>
+      </div>
+    </div> -->
+  
+    <!-- <div class="instructions_small">
+      <div class="instruction-item_small" style="display: flex; align-items: center; margin-top: -15px;">
+        <img src="icons/letter-w.png" alt="W" style="margin-right: -10px;">
+        <img src="icons/letter-s.png" alt="S" style="margin-right: 0px;">
+        <span>Moving forward and backward</span>
+      </div>
+  
+      <div class="instruction-item_small" style="display: flex; align-items: center; margin-top: -15px;">
+        <img src="icons/letter-a.png" alt="A" style="margin-right: -10px;">
+        <img src="icons/letter-d.png" alt="D" style="margin-right: 0px;">
+        <span>Moving left and right</span>
+      </div>
+  
+      <div class="instruction-item_small" style="display: flex; align-items: center; margin-top: -15px;">
+        <img src="icons/letter-q.png" alt="Q" style="margin-right: -10px;">
+        <img src="icons/letter-e.png" alt="E" style="margin-right: 0px;">
+        <span>Moving upward and downward</span>
+      </div>
+    </div> -->
+    <!-- Downsampling note -->
+  <!-- <p style="text-align: center; font-size: 1em; padding: 0em; color: #555;">
+    Note: Results are downsampled <strong>4 times</strong> for efficient online rendering. Also, we do not mask out any points for fair comparison.
+  </p> -->
+  <!-- </div> -->
+    <!-- <h3 class="title">Comparison</h3>
+    <p>
+        Attribute to our group-wise inference manner and prior geometry knowledge from pretrained video diffusion model, our model successfully produces consistent 4D geometry under fast motion. <b>For more comparisons</b>, please visit the <a href="comparison.html" target="_blank" style="font-weight: bold; color: rgb(#1f3598);">comparison page.</a>
+    </p> -->
+
+    
+  <!-- <section class="hero is-light is-small" style="background-color: white;">
+    <div class="hero-body">
+      
+      <div class="item item-steve">
+        <div id="wrapper" style="
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 2em;
+        height: 30vh;
+        ">
+            <iframe
+            src="https://geo4d.github.io/build/index.html?playbackPath=https://geo4d.github.io/viser/recording_drift-turn-4m.viser&initDistanceScale=0.2&initHeightOffset=0.0"></iframe>
+            <iframe
+            src="https://geo4d.github.io/build/index.html?playbackPath=https://geo4d.github.io/viser/recording_drift-turn-4.viser&initDistanceScale=0.2&initHeightOffset=0.0"></iframe>
+        </div>
+    <div style="display: flex; justify-content: center; gap: 0em; text-align: center; margin-top: 0px;">
+        <div style="width: 50%;">MonST3R</div>
+        <div style="width: 50%;">Ours</div>
+    </div>
+    </div>
+  </section>
+
+    <h3 class="title">More Qualitative Results</h3>
+    <p>
+      Our method generalizes to various scenes with different 4D objects and performs robustly against different camera and object motion. <b>For more results</b>, please visit the <a href="results.html" target="_blank" style="font-weight: bold; color: rgb(#1f3598);">result page.</a>
+    </p>
+
+  <section class="hero is-light is-small" style="background-color: white;">
+    <div class="hero-body">
+        <div class="item item-steve">
+            <div id="wrapper" style="
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 2em;
+            height: 30vh;
+            ">
+                <iframe
+                src="https://geo4d.github.io/build/index.html?playbackPath=https://geo4d.github.io/viser/recording_person_tracking2_good.viser&initDistanceScale=0.4&initHeightOffset=0.0"></iframe>
+                <iframe
+                src="https://geo4d.github.io/build/index.html?playbackPath=https://geo4d.github.io/viser/recording_snowboard.viser&initDistanceScale=0.4&initHeightOffset=0.0"></iframe>
+            </div>
+    </div>
+  </section> -->
+
+  <!-- <h3 class="title">More Qualitative Results on Video Depth Estimation</h3>
+<p>
+    Our method achieves state-of-the-art performance in video depth estimation and produces temporally consistent, highly detailed depth maps for diverse in-the-wild sequences.
+</p>
+
+<section class="hero is-light is-small" style="background-color: white;">
+<div class="hero-body">
+  <div class="container">
+    <div id="results-carousel" class="carousel results-carousel" data-slides-to-show="3">
+        <div class="item item-chair-tp">
+            <div class="item item-steve">
+                <img src="gif/drift-turn.gif" alt="Animated GIF">
+            </div>
+          </div>
+        <div class="item item-chair-tp">
+        <div class="item item-steve">
+        <img src="gif/snowboard.gif" alt="Animated GIF">
+      </div>
+      </div>
+      <div class="item item-chair-tp">
+        <div class="item item-steve">
+            <img src="gif/ours_drift_straight_stride2.gif" alt="Animated GIF">
+          </div>
+      </div>
+      <div class="item item-chair-tp">
+        <div class="item item-steve">
+            <img src="gif/dog-gooses.gif" alt="Animated GIF">
+          </div>
+      </div>
+      <div class="item item-chair-tp">
+        <div class="item item-steve">
+            <img src="gif/dog.gif" alt="Animated GIF">
+          </div>
+      </div>
+      <div class="item item-chair-tp">
+        <div class="item item-steve">
+            <img src="gif/dog-agility.gif" alt="Animated GIF">
+          </div>
+      </div>
+      <div class="item item-chair-tp">
+        <div class="item item-steve">
+            <img src="gif/balloon2_resize.gif" alt="Animated GIF" height="300">
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section> -->
+
+  </div>
+</section>
+
+<section class="section" id="quantitative-results">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Quantitative Results</h2>
+
+    <!-- Table 1: NVS Geo -->
+    <div class="table-title">Geometry-aware Novel View Synthesis</div>
+    <div class="results-table-wrapper">
+      <table class="results-table">
+        <thead>
+          <tr class="group-header">
+            <th rowspan="2">Method</th>
+            <th colspan="2">Visual Quality</th>
+            <th colspan="3">Camera Accuracy</th>
+            <th colspan="2">Geometry Quality</th>
+          </tr>
+          <tr class="metric-header">
+            <th>CLIP-V <span class="arrow-up"></span></th>
+            <th>FVD <span class="arrow-down"></span></th>
+            <th>ATE <span class="arrow-down"></span></th>
+            <th>RPE-T <span class="arrow-down"></span></th>
+            <th>RPE-R <span class="arrow-down"></span></th>
+            <th>CLIP-V-P <span class="arrow-up"></span></th>
+            <th>FVD-P <span class="arrow-down"></span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="method-name">Ours (Kubric)</td>
+            <td>0.643</td>
+            <td>631</td>
+            <td class="best">0.064</td>
+            <td>0.023</td>
+            <td>0.328</td>
+            <td>0.757</td>
+            <td>229</td>
+          </tr>
+          <tr class="ours">
+            <td class="method-name">Ours (Syn4D)</td>
+            <td class="best">0.740</td>
+            <td class="best">452</td>
+            <td>0.070</td>
+            <td class="best">0.021</td>
+            <td class="best">0.272</td>
+            <td class="best">0.816</td>
+            <td class="best">139</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-caption"><b>Quantitative evaluation</b> for geometry-aware novel view synthesis on the in-house benchmark of 280 unseen video pairs.</p>
+
+
+    <!-- Table 2: 3D Tracking -->
+    <div class="table-title">3D Point Tracking</div>
+    <div class="results-table-wrapper">
+      <table class="results-table">
+        <thead>
+          <tr class="group-header">
+            <th rowspan="3">Method</th>
+            <th colspan="4">Sparse Point Tracking</th>
+            <th colspan="4">Dense Point Tracking</th>
+          </tr>
+          <tr class="sub-header">
+            <th colspan="2">ADT</th>
+            <th colspan="2">PStudio</th>
+            <th colspan="2">Soviet</th>
+            <th colspan="2">Warehouse</th>
+          </tr>
+          <tr class="metric-header">
+            <th>APD <span class="arrow-up"></span></th>
+            <th>EPE <span class="arrow-down"></span></th>
+            <th>APD <span class="arrow-up"></span></th>
+            <th>EPE <span class="arrow-down"></span></th>
+            <th>APD <span class="arrow-up"></span></th>
+            <th>EPE <span class="arrow-down"></span></th>
+            <th>APD <span class="arrow-up"></span></th>
+            <th>EPE <span class="arrow-down"></span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="method-name">4RC</td>
+            <td>87.82</td>
+            <td>0.1480</td>
+            <td>87.32</td>
+            <td>0.1304</td>
+            <td>58.35</td>
+            <td>3.8458</td>
+            <td>79.07</td>
+            <td>0.3302</td>
+          </tr>
+          <tr class="ours">
+            <td class="method-name">4RC (Syn4D)</td>
+            <td class="best">89.44</td>
+            <td class="best">0.1258</td>
+            <td class="best">88.10</td>
+            <td class="best">0.1276</td>
+            <td class="best">74.46</td>
+            <td class="best">1.8934</td>
+            <td class="best">88.79</td>
+            <td class="best">0.1915</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-caption"><b>Quantitative evaluation for 3D tracking.</b> Co-training the baseline 4RC with our data yields significant improvements on both <em>sparse</em> and <em>dense</em> 3D tracking under an identical experimental setting.</p>
+
+
+    <!-- Table 3: Camera Pose Estimation + Multi-View 3D Reconstruction -->
+    <div class="table-title">Camera Pose Estimation &amp; Multi-View 3D Reconstruction</div>
+    <div class="results-table-wrapper">
+      <table class="results-table">
+        <thead>
+          <tr class="group-header">
+            <th rowspan="3">Method</th>
+            <th colspan="9">Camera Pose Estimation</th>
+            <th colspan="6">Multi-View 3D Reconstruction</th>
+          </tr>
+          <tr class="sub-header">
+            <th colspan="3">Sintel</th>
+            <th colspan="3">TUM-dynamics</th>
+            <th colspan="3">ScanNet</th>
+            <th colspan="3">7-Scenes</th>
+            <th colspan="3">NRGBD</th>
+          </tr>
+          <tr class="metric-header">
+            <th>ATE <span class="arrow-down"></span></th>
+            <th>RPE-T <span class="arrow-down"></span></th>
+            <th>RPE-R <span class="arrow-down"></span></th>
+            <th>ATE <span class="arrow-down"></span></th>
+            <th>RPE-T <span class="arrow-down"></span></th>
+            <th>RPE-R <span class="arrow-down"></span></th>
+            <th>ATE <span class="arrow-down"></span></th>
+            <th>RPE-T <span class="arrow-down"></span></th>
+            <th>RPE-R <span class="arrow-down"></span></th>
+            <th>Acc <span class="arrow-down"></span></th>
+            <th>Comp <span class="arrow-down"></span></th>
+            <th>NC <span class="arrow-up"></span></th>
+            <th>Acc <span class="arrow-down"></span></th>
+            <th>Comp <span class="arrow-down"></span></th>
+            <th>NC <span class="arrow-up"></span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="method-name">4RC</td>
+            <td>0.144</td>
+            <td>0.053</td>
+            <td>0.430</td>
+            <td class="best">0.010</td>
+            <td class="best">0.008</td>
+            <td class="best">0.314</td>
+            <td>0.032</td>
+            <td class="best">0.012</td>
+            <td>0.437</td>
+            <td>0.034</td>
+            <td>0.051</td>
+            <td>0.783</td>
+            <td>0.036</td>
+            <td>0.034</td>
+            <td>0.912</td>
+          </tr>
+          <tr class="ours">
+            <td class="method-name">4RC (Syn4D)</td>
+            <td class="best">0.076</td>
+            <td class="best">0.040</td>
+            <td class="best">0.302</td>
+            <td>0.012</td>
+            <td>0.010</td>
+            <td>0.325</td>
+            <td class="best">0.032</td>
+            <td>0.013</td>
+            <td class="best">0.384</td>
+            <td class="best">0.031</td>
+            <td class="best">0.043</td>
+            <td class="best">0.791</td>
+            <td class="best">0.029</td>
+            <td class="best">0.032</td>
+            <td class="best">0.924</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-caption"><b>Quantitative evaluation for camera pose estimation and multi-view 3D reconstruction.</b> Co-training with our data significantly improves 3D reconstruction performance across all benchmarks while remaining comparable or better on camera pose estimation.</p>
+
+
+    <!-- Table 4: Video Depth Estimation -->
+    <div class="table-title">Video Depth Estimation</div>
+    <div class="results-table-wrapper">
+      <table class="results-table">
+        <thead>
+          <tr class="group-header">
+            <th rowspan="2">Method</th>
+            <th rowspan="2">Align</th>
+            <th colspan="2">Sintel</th>
+            <th colspan="2">Bonn</th>
+            <th colspan="2">KITTI</th>
+          </tr>
+          <tr class="metric-header">
+            <th>Rel <span class="arrow-down"></span></th>
+            <th>&delta; &lt; 1.25 <span class="arrow-up"></span></th>
+            <th>Rel <span class="arrow-down"></span></th>
+            <th>&delta; &lt; 1.25 <span class="arrow-up"></span></th>
+            <th>Rel <span class="arrow-down"></span></th>
+            <th>&delta; &lt; 1.25 <span class="arrow-up"></span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="method-name">4RC</td>
+            <td>scale</td>
+            <td>0.311</td>
+            <td>62.2</td>
+            <td>0.051</td>
+            <td class="best">97.4</td>
+            <td>0.076</td>
+            <td>95.2</td>
+          </tr>
+          <tr class="ours">
+            <td class="method-name">4RC (Syn4D)</td>
+            <td>scale</td>
+            <td class="best">0.211</td>
+            <td class="best">74.6</td>
+            <td class="best">0.048</td>
+            <td>97.3</td>
+            <td class="best">0.071</td>
+            <td class="best">95.7</td>
+          </tr>
+          <tr>
+            <td class="method-name section-divider">4RC</td>
+            <td class="section-divider">scale &amp; shift</td>
+            <td class="section-divider">0.249</td>
+            <td class="section-divider">67.0</td>
+            <td class="section-divider">0.048</td>
+            <td class="section-divider">97.3</td>
+            <td class="section-divider">0.058</td>
+            <td class="section-divider">95.5</td>
+          </tr>
+          <tr class="ours">
+            <td class="method-name">4RC (Syn4D)</td>
+            <td>scale &amp; shift</td>
+            <td class="best">0.176</td>
+            <td class="best">76.6</td>
+            <td class="best">0.046</td>
+            <td class="best">97.3</td>
+            <td class="best">0.057</td>
+            <td class="best">95.7</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-caption"><b>Quantitative evaluation for video depth estimation.</b> Metrics reported under both scale-only and scale-and-shift alignments. Co-training with our data improves performance on nearly all datasets across all metrics.</p>
+
+
+    <!-- Table 5: Human Pose Estimation -->
+    <div class="table-title">Human Pose Estimation</div>
+    <div class="results-table-wrapper">
+      <table class="results-table">
+        <thead>
+          <tr class="group-header">
+            <th rowspan="2">Method</th>
+            <th colspan="3">Hi4D</th>
+            <th colspan="3">CHI3D</th>
+            <th colspan="3">3DPW</th>
+          </tr>
+          <tr class="metric-header">
+            <th>MPJPE <span class="arrow-down"></span></th>
+            <th>PA-MPJPE <span class="arrow-down"></span></th>
+            <th>PVE <span class="arrow-down"></span></th>
+            <th>MPJPE <span class="arrow-down"></span></th>
+            <th>PA-MPJPE <span class="arrow-down"></span></th>
+            <th>PVE <span class="arrow-down"></span></th>
+            <th>MPJPE <span class="arrow-down"></span></th>
+            <th>PA-MPJPE <span class="arrow-down"></span></th>
+            <th>PVE <span class="arrow-down"></span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="method-name">MA-HMR</td>
+            <td>58.8</td>
+            <td>43.9</td>
+            <td>73.6</td>
+            <td>47.2</td>
+            <td>31.4</td>
+            <td>55.7</td>
+            <td>63.2</td>
+            <td>40.2</td>
+            <td>73.8</td>
+          </tr>
+          <tr>
+            <td class="method-name">MA-HMR + Cont</td>
+            <td>58.7</td>
+            <td>44.1</td>
+            <td>73.2</td>
+            <td>46.9</td>
+            <td>31.4</td>
+            <td>55.5</td>
+            <td>63.0</td>
+            <td>40.0</td>
+            <td>73.4</td>
+          </tr>
+          <tr class="ours">
+            <td class="method-name">MA-HMR + Syn4D</td>
+            <td class="best">57.7</td>
+            <td class="best">43.0</td>
+            <td class="best">72.2</td>
+            <td class="best">46.1</td>
+            <td class="best">31.1</td>
+            <td class="best">54.9</td>
+            <td class="best">62.5</td>
+            <td class="best">39.6</td>
+            <td class="best">72.9</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-caption"><b>Quantitative evaluation for human pose estimation.</b> All metrics reported in millimeters. <em>+Cont</em> denotes continued training on the original datasets; <em>+Syn4D</em> denotes continued training on the original datasets together with our data.</p>
+
+  </div>
+</section>
+
+
+<section class="section" id="Acknowledgment">
+  <div class="container is-max-desktop content">
+    <h2 class="title">Acknowledgment</h2>
+    <p>
+      The authors of this work were supported by Clarendon Scholarship, NTU SUG-NAP, NRF-NRFF17-2025-0009, ERC 101001212-UNION, and EPSRC EP/Z001811/1 SYN3D.
+    </p>
+    <p>
+      We thank Runjia Li, Ruining Li, Yiming Chen, and Minghao Chen for helpful suggestions and discussions. We also thank Angel He for proofreading.
+    </p>
+
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@misc{jiang2026syn4d,
+      title={Syn4D: A Multiview Synthetic 4D Dataset},
+      author={Zeren Jiang and Yushi Lan and Yihang Luo and Yufan Deng and Zihang Lai and Edgar Sucar and Christian Rupprecht and Iro Laina and Diane Larlus and Chuanxia Zheng and Andrea Vedaldi},
+      year={2026},
+      eprint={2601.05251},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      <!-- url={https://arxiv.org/abs/2601.05251}, -->
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <!-- <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="http://files.ait.ethz.ch/projects/vid2avatar/main.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/MoyGcc/vid2avatar" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div> -->
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This webpage is built with the template from <a href="https://github.com/nerfies/nerfies.github.io">NeRFies</a> and <a href="https://monst3r-project.github.io/">MonST3R</a>. We sincerely thank all the contributors for those open-source templates.
+          </p>
+          <p>
+            The interactive 4D visualization is powered by <a href="https://github.com/nerfstudio-project/viser">Viser</a>. We sincerely thank all contributors for the Viser project.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

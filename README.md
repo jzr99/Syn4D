@@ -1,3 +1,2 @@
-# Syn4D: A Multiview Synthetic 4D Dataset
-
-Dataset, rendering code will come soon!
+# mesh-4d.github.io
+mesh4d project page

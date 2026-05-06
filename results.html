@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Geo4D: Leveraging Video Generators for Geometric 4D Scene Reconstruction">
+  <meta name="keywords" content="Vid2Avatar">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geo4D: Leveraging Video Generators for Geometric 4D Scene Reconstruction</title>
+
+
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./resources/Geo4D_ICON.png">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+<!-- Begin new styles from demos page -->
+<style>
+    /* body {
+      padding: 2em;
+      font-family: sans-serif;
+    } */
+
+    iframe {
+      border-radius: 8px;
+      width: 48%;
+      height: 100%;
+      border: none;
+      box-shadow: 0 0 0px 0em rgba(0, 0, 0, 0.15);
+    }
+
+    /* @media (max-width: 768px) {
+      iframe {
+        width: 100%;
+        height: 80em;
+      }
+    } */
+
+    /* a,
+    a:link {
+      color: #777;
+    } */
+
+    /* Styles for the instruction icons and text */
+    .instructions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.2em;
+      text-align: center;
+      padding: 0.6em;
+    }
+
+    .instruction-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      font-size: 1.2em;
+    }
+
+    .instruction-item img {
+      width: 36px;
+      height: 36px;
+    }
+
+    .instructions_small {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1em;
+      text-align: center;
+      padding: 0.5em;
+    }
+
+    .instruction-item_small {
+      display: flex;
+      align-items: center;
+      gap: 0.3em;
+      font-size: 1.0em;
+    }
+
+    .instruction-item_small img {
+      width: 30px;
+      height: 30px;
+    }
+
+  </style>
+  <!-- End new styles -->
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+            <img src="./resources/geo4d_title.png" alt="Geo4D Icon" style="width: 378px; vertical-align: middle;">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+<section class="section" id="result">
+  <div class="container is-max-desktop content">
+
+    <div class="content">
+        <!-- Instructions with icons -->
+    <div class="instructions_small" style="margin-top: -1em;">
+      <div class="instruction-item_small" style="display: flex; align-items: center;">
+        <img src="icons/left-click.png" alt="Left Click" style="margin-right: 0px;">
+        <span>Drag with <em>left</em> click to <strong>rotate</strong> view</span>
+      </div>
+  
+      <div class="instruction-item_small" style="display: flex; align-items: center; margin-top: 10px;">
+        <img src="icons/scroll-wheel.png" alt="Scroll Wheel" style="margin-right: -5px;">
+        <span>Scroll to <strong>zoom</strong> in/out</span>
+      </div>
+  
+      <div class="instruction-item_small" style="display: flex; align-items: center; margin-top: 10px;">
+        <img src="icons/right-click.png" alt="Right Click" style="margin-right: 0px;">
+        <span>Drag with <em>right</em> click to <strong>move</strong> view</span>
+      </div>
+    </div>
+  
+    <div class="instructions_small">
+      <div class="instruction-item_small" style="display: flex; align-items: center; margin-top: -15px;">
+        <img src="icons/letter-w.png" alt="W" style="margin-right: -10px;">
+        <img src="icons/letter-s.png" alt="S" style="margin-right: 0px;">
+        <span>Moving forward and backward</span>
+      </div>
+  
+      <div class="instruction-item_small" style="display: flex; align-items: center; margin-top: -15px;">
+        <img src="icons/letter-a.png" alt="A" style="margin-right: -10px;">
+        <img src="icons/letter-d.png" alt="D" style="margin-right: 0px;">
+        <span>Moving left and right</span>
+      </div>
+  
+      <div class="instruction-item_small" style="display: flex; align-items: center; margin-top: -15px;">
+        <img src="icons/letter-q.png" alt="Q" style="margin-right: -10px;">
+        <img src="icons/letter-e.png" alt="E" style="margin-right: 0px;">
+        <span>Moving upward and downward</span>
+      </div>
+    </div>
+    <!-- Downsampling note -->
+  <p style="text-align: center; font-size: 1em; padding: 0em; color: #555;">
+    Note: Results are downsampled <strong>4 times</strong> for efficient online rendering. Also, we do not mask out any points for fair comparison.
+  </p>
+  </div>
+  <h3 class="title">More Qualitative Results</h3>
+  <p>
+    Our method generalizes to various scenes with different 4D objects and performs robustly against different camera and object motion.
+  </p>
+
+<section class="hero is-light is-small" style="background-color: white;">
+  <div class="hero-body">
+      <div class="item item-steve">
+          <div id="wrapper" style="
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
+          gap: 2em;
+          height: 30vh;
+          ">
+              <iframe
+              src="https://geo4d.github.io/build/index.html?playbackPath=https://geo4d.github.io/viser/recording_hike.viser&initDistanceScale=0.4&initHeightOffset=0.0"></iframe>
+              <iframe
+              src="https://geo4d.github.io/build/index.html?playbackPath=https://geo4d.github.io/viser/recording_balloon2_good.viser&initDistanceScale=0.4&initHeightOffset=0.0"></iframe>
+          </div>
+          <div id="wrapper" style="
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
+          gap: 2em;
+          height: 30vh;
+          ">
+              <iframe
+              src="https://geo4d.github.io/build/index.html?playbackPath=https://geo4d.github.io/viser/recording_dog.viser&initDistanceScale=0.4&initHeightOffset=0.0"></iframe>
+              <iframe
+              src="https://geo4d.github.io/build/index.html?playbackPath=https://geo4d.github.io/viser/recording_kitti_1_good.viser&initDistanceScale=0.4&initHeightOffset=0.0"></iframe>
+          </div>
+    <!-- <div class="container">
+      <div id="results-carousel" class="carousel results-carousel" data-slides-to-show="2">
+        <div class="item item-steve">
+          <iframe
+              src="https://geo4d.github.io/build/index.html?playbackPath=https://geo4d.github.io/viser/recording_person_tracking2_good.viser&initDistanceScale=0.4&initHeightOffset=0.0", style="height: 30vh; width: 100%;"></iframe>
+        </div>
+        <div class="item item-chair-tp">
+          <iframe
+              src="https://geo4d.github.io/build/index.html?playbackPath=https://geo4d.github.io/viser/recording_snowboard.viser&initDistanceScale=0.4&initHeightOffset=0.0", style="height: 30vh; width: 100%;"></iframe>
+        </div>
+        <div class="item item-chair-tp">
+          <iframe
+              src="https://geo4d.github.io/build/index.html?playbackPath=https://geo4d.github.io/viser/recording_hike.viser&initDistanceScale=0.4&initHeightOffset=0.0", style="height: 30vh; width: 100%;"></iframe>
+        </div>
+        <div class="item item-chair-tp">
+          <iframe
+              src="https://geo4d.github.io/build/index.html?playbackPath=https://geo4d.github.io/viser/recording_balloon2_good.viser&initDistanceScale=0.4&initHeightOffset=0.0", style="height: 30vh; width: 100%;"></iframe>
+        </div>
+        <div class="item item-chair-tp">
+          <iframe
+              src="https://geo4d.github.io/build/index.html?playbackPath=https://geo4d.github.io/viser/recording_dog.viser&initDistanceScale=0.4&initHeightOffset=0.0", style="height: 30vh; width: 100%;"></iframe>
+        </div>
+        <div class="item item-chair-tp">
+          <iframe
+              src="https://geo4d.github.io/build/index.html?playbackPath=https://geo4d.github.io/viser/recording_kitti_1_good.viser&initDistanceScale=0.4&initHeightOffset=0.0", style="height: 30vh; width: 100%;"></iframe>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</section>
+    
+  
+</section>
+
+
+<footer class="footer">
+  <!-- <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="http://files.ait.ethz.ch/projects/vid2avatar/main.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/MoyGcc/vid2avatar" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div> -->
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This webpage is built with the template from <a href="https://github.com/nerfies/nerfies.github.io">NeRFies</a> and <a href="https://monst3r-project.github.io/">MonST3R</a>. We sincerely thank all the contributors for those open-source templates.
+          </p>
+          <p>
+            The interactive 4D visualization is powered by <a href="https://github.com/nerfstudio-project/viser">Viser</a>. We sincerely thank all contributors for the Viser project.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
