@@ -1,0 +1,55 @@
+name: Deploy to GitHub Pages
+
+# This workflow acts as a reliable fallback for the automatic
+# "pages build and deployment" workflow. It triggers whenever that
+# workflow fails (e.g., due to transient CDN sync errors) and
+# redeploys the project_page branch directly — without Jekyll —
+# which is simpler and eliminates an additional point of failure.
+#
+# It can also be triggered manually from the Actions tab to force
+# a fresh deployment at any time.
+
+on:
+  workflow_run:
+    workflows: ["pages build and deployment"]
+    types: [completed]
+    branches: [project_page]
+  workflow_dispatch:
+
+# Allow only one concurrent deployment; do not cancel in-progress runs.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    # Run when the automatic workflow failed, or when triggered manually.
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'failure'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project_page branch
+        uses: actions/checkout@v4
+        with:
+          ref: project_page
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
