@@ -13,6 +13,7 @@
 
 - May 7, 2026: 🤗 We release the project page of Syn4D!
 - June 30, 2026: 🤗 We release the Syn4D dataset and visualization code!
+- Sep 1, 2026: 🤗 We release the Syn4D [benchmark](https://github.com/jzr99/Syn4D_benchmark) for 4D reconstruction and tracking!
 
 ## 📦 Coming Soon
 
